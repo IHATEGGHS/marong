@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고민 상담 채팅</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    #chat-container { max-width: 500px; margin: 20px auto; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    #chat-messages { height: 300px; overflow-y: auto; border-bottom: 1px solid #ddd; margin-bottom: 10px; padding: 10px; }
+    
+    /* 말풍선 스타일 */
+    .message {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 15px;
+      margin: 10px 0;
+      max-width: 75%;
+      display: inline-block;
+      word-wrap: break-word;
+    }
+
+    /* 좌측에 표시되는 메시지 */
+    .left {
+      background-color: #e1f7d5;
+      text-align: left;
+      border-radius: 15px 15px 15px 0;
+    }
+
+    /* 우측에 표시되는 메시지 (사용자가 입력한 메시지) */
+    .right {
+      background-color: #d1e7ff;
+      text-align: right;
+      border-radius: 15px 15px 0 15px;
+      margin-left: auto;
+    }
+
+    #message-form { display: flex; gap: 5px; }
+    #message-form input { flex: 1; padding: 8px; }
+    #message-form button { padding: 8px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <div id="chat-container">
+    <h2>고민 상담 채팅</h2>
+    <div id="chat-messages"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="메시지를 입력하세요..." required />
+      <button type="submit">전송</button>
+    </form>
+  </div>
+
+  <script>
+    // 첫 번째 메시지를 바로 표시하는 코드
+    window.onload = () => {
+      const firstMessage = document.createElement('div');
+      firstMessage.className = 'message left';
+      firstMessage.textContent = '안녕하세요!\n그럼, 일기쓰기를 시작해볼게요.\n어떤 일이 오늘 하루를 채웠나요?';
+      document.getElementById('chat-messages').appendChild(firstMessage);
+      document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+    };
+
+    const responses = [
+      "그 상황에서 어떤 생각이 드셨나요, 그리고 어떤 결정을 느끼셨나요?",
+      "그 일은 언제 일어났나요? 그 상황에서 어떤 일이 있었는지 조금 더 이야기해주실 수 있을까요?",
+      "그렇군요.. 정말 힘든 일이었겠어요. 더 말해줄 수 있을까요? 그때 어떤 감정을 느꼈고, 지금은 어떤지도요?",
+      "말해주셔서 감사해요, 햄. 이제 귀여운 햄이 나타나 그 고민을 해결해줄거에요",
+      "이제 햄이 고민을 햅씨로 바꾸어 꼭꼭 씹어서 해결해줄거에요"
+    ];리고 
+
+    let responseIndex = 0;
+
+    // 메시지 전송
+    document.getElementById('message-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const messageText = document.getElementById('message-input').value;
+      
+      // 사용자가 보낸 메시지 출력
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message right';  // 사용자가 입력한 메시지는 우측에 표시
+      userMessage.textContent = messageText;
+      document.getElementById('chat-messages').appendChild(userMessage);
+      document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+      document.getElementById('message-input').value = '';
+
+      // 자동 응답 처리
+      if (responseIndex < responses.length) {
+        setTimeout(() => {
+          const botResponse = document.createElement('div');
+          botResponse.className = 'message left';  // 봇의 메시지는 좌측에 표시
+          botResponse.textContent = responses[responseIndex];
+          document.getElementById('chat-messages').appendChild(botResponse);
+          document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+
+          responseIndex++;
+        }, 1000);  // 1초 후 자동 응답
+      }
+    });
+  </script>
+
+</body>
+</html>
